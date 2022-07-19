@@ -20,8 +20,12 @@ spec:
       port: 8001
   routes:
     - path: /
-      action:
-        pass: spa
+    matches:
+      - conditions:
+          - cookie: "app_version"
+            value: "dark"
+        action:
+          pass: spa-dark
     - path: /api
       policies:
         - name: rate-limit-policy
@@ -42,3 +46,6 @@ spec:
         proxy:
           upstream: api
           rewritePath: /images
+    - name: spa-dark
+    service: spa-dark
+    port: 80
